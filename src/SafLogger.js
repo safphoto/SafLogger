@@ -38,9 +38,6 @@ SAF.Logger = function (targetAppender, targetLevel) {
         }
     };
 
-    var formatMessage = function (message) {
-        var timeStamp
-    };
     /**
      *
      * @param targetLevel
@@ -49,8 +46,8 @@ SAF.Logger = function (targetAppender, targetLevel) {
      */
     this.log = function (targetLevel, message) {
         if (hasConsoleLog() && targetLevel === level) {
-            var formatted = formatMessage(message);
-            window.console.log(formatted);
+            var logEntry = formatLogEntry(message);
+            window.console.log(logEntry);
         }
 
         return this;
@@ -99,10 +96,16 @@ SAF.Logger = function (targetAppender, targetLevel) {
 
     /**
      *
-     * @param date
+     * @param message
+     * @returns {*}
      */
-    var formatDate = function(date) {
-        return format("{0}/{1}/{2}", padLeft(2, 0, date.getMonth() + 1), padLeft(2, 0, date.getDate()), date.getFullYear());
+    var formatLogEntry = function (message) {
+        var timeStamp = new Date();
+
+        return format('{0} {1} ',
+            formatDate(timeStamp),
+            formatTime(timeStamp),
+            message);
     };
 
     /**
@@ -122,6 +125,17 @@ SAF.Logger = function (targetAppender, targetLevel) {
      *
      * @param date
      */
+    var formatDate = function(date) {
+        return format("{0}/{1}/{2}",
+            padLeft(2, 0, date.getMonth() + 1),
+            padLeft(2, 0, date.getDate()),
+            date.getFullYear());
+    };
+
+    /**
+     *
+     * @param date
+     */
     var formatTime = function(date) {
         return format("{0}:{1}:{2}.{3}",
             padLeft(2, 0, date.getHours()),
@@ -129,5 +143,4 @@ SAF.Logger = function (targetAppender, targetLevel) {
             padLeft(2, 0, date.getSeconds()),
             padLeft(2, 0, date.getMilliseconds()));
     };
-
 };
