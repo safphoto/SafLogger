@@ -124,7 +124,7 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * Pad input string with specified character
      * @param size
      * @param padString
      * @param value
