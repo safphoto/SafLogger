@@ -3,7 +3,16 @@ var SAF = SAF || {};
 SAF.Logger = function (targetAppender, targetLevel) {
     'use strict';
 
+    var appender = 0;
     var level = 0;
+
+    /**
+     *
+     * @type {{CONSOLE: number}}
+     */
+    this.appenderOptions = {
+        CONSOLE: 0
+    };
 
     /**
      *
@@ -45,11 +54,17 @@ SAF.Logger = function (targetAppender, targetLevel) {
      * @returns {SAF.Logger}
      */
     this.log = function (targetLevel, message) {
-        if (hasConsoleLog() && targetLevel === level) {
+        if (targetLevel === level) {
             var logEntry = formatLogEntry(message);
-            window.console.log(logEntry);
-        }
 
+            switch (appender){
+                case this.appenderOptions.CONSOLE:
+                    if(hasConsoleLog()) {
+                        window.console.log(logEntry);
+                    }
+                    break;
+            }
+        }
         return this;
     };
 
