@@ -56,6 +56,8 @@ SAF.Logger = function () {
         level = targetLevel;
         appender = targetAppender;
         this.appenderOptions = targetAppenderOptions;
+
+        return this;
     };
 
     /**

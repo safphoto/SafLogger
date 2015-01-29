@@ -11,7 +11,7 @@
             var viewer = document.getElementById("viewer");
             viewer.innerHTML = "";
 
-            // CONSOLE APPENDER
+            // EXAMPLE - CONSOLE APPENDER
             var logger = new SAF.Logger();
             logger.init(logger.levels.DEBUG, logger.appenders.CONSOLE);
             logger.group('Initialize');
@@ -24,7 +24,7 @@
             logger.log(logger.levels.DEBUG, 'Receiving response');
             logger.groupEnd();
 
-            // CONTAINER APPENDER
+            // EXAMPLE - CONTAINER APPENDER
             var logger2 = new SAF.Logger();
             logger2.init(logger2.levels.INFO, logger.appenders.CONTAINER, { 'elementId': 'viewer' });
             logger2.log(logger2.levels.DEBUG, 'We should not see this log message because of its level');
@@ -32,7 +32,7 @@
             logger2.log(logger2.levels.INFO, 'This is another log message with a level set to INFO');
             logger2.log(logger2.levels.ERROR, 'This is a log message for level ERROR');
 
-            // CUSTOM APPENDER
+            // EXAMPLE - CUSTOM APPENDER - pass in your own function as the appender
             var logger3 = new SAF.Logger();
             logger3.init(logger2.levels.INFO, function(logEntry) { alert(logEntry); }, { 'elementId': 'viewer' });
             logger3.log(logger2.levels.DEBUG, 'We should not see this log message because of its level');
