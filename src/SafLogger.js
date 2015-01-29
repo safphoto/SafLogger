@@ -1,13 +1,3 @@
-/*
-
-    var logger = new SAF.Logger().init(logger.appenders.CONSOLE, logger.levels.DEBUG);
-
-    logger.group('Initialize');
-    logger.log(SAF.Logger.levels.DEBUG, 'Dom is loaded');
-    logger.log(SAF.Logger.levels.DEBUG, 'UI elements data bound');
-    logger.groupEnd();
-
-*/
 var SAF = SAF || {};
 
 SAF.Logger = function () {
