@@ -145,7 +145,7 @@ SAF.Logger = function () {
     var formatLogEntry = function (message) {
         var timeStamp = new Date();
 
-        return format('{0} {1} {2}',
+        return format('{0} {1} - {2}',
             formatDate(timeStamp),
             formatTime(timeStamp),
             message);
