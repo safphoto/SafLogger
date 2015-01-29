@@ -1,32 +1,75 @@
+/*
+
+    var logger = new SAF.Logger().init(logger.appenders.CONSOLE, logger.levels.DEBUG);
+
+    logger.group('Initialize');
+    logger.log(SAF.Logger.levels.DEBUG, 'Dom is loaded');
+    logger.log(SAF.Logger.levels.DEBUG, 'UI elements data bound');
+    logger.groupEnd();
+
+*/
 var SAF = SAF || {};
 
-SAF.Logger = function (targetAppender, targetLevel) {
+SAF.Logger = function () {
     'use strict';
 
-    var appender = 0;
+    var self = this;
+    var appender = function(logEntry) {};
     var level = 0;
 
     /**
-     *
-     * @type {{CONSOLE: number}}
+     * User specified appender options
+     * @type {{}}
      */
-    this.appenderOptions = {
-        CONSOLE: 0
+    this.appenderOptions = {};
+
+    /**
+     * Canned appenders. The user can specify a custom appender by passing in a
+     * function reference as the appender.
+     * @type {{CONSOLE: Function, CONTAINER: Function}}
+     */
+    this.appenders = {
+        CONSOLE: function(logEntry) {
+            if(hasConsoleLog()) {
+                window.console.log(logEntry);
+            }
+        },
+        CONTAINER: function(logEntry, options) {
+            if(options.hasOwnProperty('elementId')) {
+                var element = document.getElementById(options.elementId);
+                var newLine = document.createElement("br");
+                element.appendChild(newLine);
+                var entry = document.createTextNode(logEntry);
+                element.appendChild(entry);
+            }
+        }
     };
 
     /**
-     *
+     * Log levels that can be used with this logger
      * @type {{DEBUG: number, INFO: number, WARN: number, ERROR: number}}
      */
-    this.levelOptions = {
-        DEBUG:  0,
+    this.levels = {
+        DEBUG: 0,
         INFO: 1,
         WARN: 2,
         ERROR: 3
     };
 
     /**
-     *
+     * Initialize the logger by passing to it the log level, the appender, and the appender options
+     * @param targetLevel
+     * @param targetAppender
+     * @param targetAppenderOptions
+     */
+    this.init = function(targetLevel, targetAppender, targetAppenderOptions) {
+        level = targetLevel;
+        appender = targetAppender;
+        this.appenderOptions = targetAppenderOptions;
+    };
+
+    /**
+     * Begin the console group
      * @param name
      * @returns {SAF.Logger}
      */
@@ -39,7 +82,7 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * End the console group
      */
     this.groupEnd = function() {
         if (hasConsoleGroup()) {
@@ -48,28 +91,21 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * Write out a log entry, formatting it first
      * @param targetLevel
      * @param message
      * @returns {SAF.Logger}
      */
     this.log = function (targetLevel, message) {
-        if (targetLevel === level) {
+        if (targetLevel >= level) {
             var logEntry = formatLogEntry(message);
-
-            switch (appender){
-                case this.appenderOptions.CONSOLE:
-                    if(hasConsoleLog()) {
-                        window.console.log(logEntry);
-                    }
-                    break;
-            }
+            appender(logEntry, self.appenderOptions);
         }
         return this;
     };
 
     /**
-     *
+     * Verifies that the window has a console
      * @returns {Console|Console.log}
      */
     var hasConsoleLog = function() {
@@ -77,7 +113,7 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * Verifies that the window has a console group
      * @returns {Console|Console.group}
      */
     var hasConsoleGroup = function() {
@@ -85,7 +121,7 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * Replace all instances of a substring with the specified string
      * @param source
      * @param find
      * @param replace
@@ -96,7 +132,7 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * Javascript implementation of the standard string.format(template, values[])
      * @returns {*}
      */
     var format = function() {
@@ -110,14 +146,14 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * Formatting the log entry with a timestamp
      * @param message
      * @returns {*}
      */
     var formatLogEntry = function (message) {
         var timeStamp = new Date();
 
-        return format('{0} {1} ',
+        return format('{0} {1} {2}',
             formatDate(timeStamp),
             formatTime(timeStamp),
             message);
@@ -137,7 +173,7 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * Creates a date string with elements padded left with zeros
      * @param date
      */
     var formatDate = function(date) {
@@ -148,7 +184,7 @@ SAF.Logger = function (targetAppender, targetLevel) {
     };
 
     /**
-     *
+     * Creates a time string with elements padded left with zeros
      * @param date
      */
     var formatTime = function(date) {
