@@ -24,9 +24,9 @@
             logger.log(logger.levels.DEBUG, 'Receiving response');
             logger.groupEnd();
 
-            // EXAMPLE - CONTAINER APPENDER
+            // EXAMPLE - HTML APPENDER
             var logger2 = new SAF.Logger();
-            logger2.init(logger2.levels.INFO, logger.appenders.CONTAINER, { 'elementId': 'viewer' });
+            logger2.init(logger2.levels.INFO, logger.appenders.HTML, { 'elementId': 'viewer' });
             logger2.log(logger2.levels.DEBUG, 'We should not see this log message because of its level');
             logger2.log(logger2.levels.INFO, 'This is the second log message, but the first with a level of INFO or higher');
             logger2.log(logger2.levels.INFO, 'This is another log message with a level set to INFO');
@@ -36,9 +36,6 @@
             var logger3 = new SAF.Logger();
             logger3.init(logger2.levels.INFO, function(logEntry) { alert(logEntry); }, { 'elementId': 'viewer' });
             logger3.log(logger2.levels.DEBUG, 'We should not see this log message because of its level');
-            logger3.log(logger2.levels.INFO, 'This is the second log message, but the first with a level of INFO or higher');
-            logger3.log(logger2.levels.INFO, 'This is another log message with a level set to INFO');
-            logger3.log(logger2.levels.ERROR, 'This is a log message for level ERROR');
 
         }
     </script>

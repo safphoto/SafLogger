@@ -16,7 +16,7 @@ SAF.Logger = function () {
     /**
      * Canned appenders. The user can specify a custom appender by passing in a
      * function reference as the appender.
-     * @type {{CONSOLE: Function, CONTAINER: Function}}
+     * @type {{CONSOLE: Function, HTML: Function}}
      */
     this.appenders = {
         CONSOLE: function(logEntry) {
@@ -24,7 +24,7 @@ SAF.Logger = function () {
                 window.console.log(logEntry);
             }
         },
-        CONTAINER: function(logEntry, options) {
+        HTML: function(logEntry, options) {
             if(options.hasOwnProperty('elementId')) {
                 var element = document.getElementById(options.elementId);
                 var newLine = document.createElement("br");
