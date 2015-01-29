@@ -34,8 +34,9 @@
 
             // EXAMPLE - CUSTOM APPENDER - pass in your own function as the appender
             var logger3 = new SAF.Logger();
-            logger3.init(logger2.levels.INFO, function(logEntry) { alert(logEntry); }, { 'elementId': 'viewer' });
-            logger3.log(logger2.levels.DEBUG, 'We should not see this log message because of its level');
+            logger3.init(logger3.levels.INFO, function(logEntry) { alert(logEntry); });
+            logger3.log(logger3.levels.DEBUG, 'We should not see this log message because of its level');
+            logger3.log(logger3.levels.WARN, 'We should see this one');
 
         }
     </script>
