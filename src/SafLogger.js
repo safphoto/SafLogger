@@ -184,6 +184,6 @@ SAF.Logger = function () {
             padLeft(2, 0, date.getHours()),
             padLeft(2, 0, date.getMinutes()),
             padLeft(2, 0, date.getSeconds()),
-            padLeft(2, 0, date.getMilliseconds()));
+            padLeft(3, 0, date.getMilliseconds()));
     };
 };
